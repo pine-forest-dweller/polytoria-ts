@@ -42,7 +42,7 @@ export function setupProjectWatchProgram(build: ProjectBuild, usePolling: boolea
 		ignoreInitial: false,
 		usePolling,
 		awaitWriteFinish: { pollInterval: 10, stabilityThreshold: 50 },
-		ignored: (filePath, stats) => {
+		ignored: (filePath: string, stats?: fs.Stats) => {
 			if (build.isConfigPath(filePath)) {
 				return false;
 			}
