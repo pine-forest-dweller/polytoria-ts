@@ -3,7 +3,7 @@ import { errors } from "Shared/diagnostics";
 import { TransformState } from "TSTransformer";
 import { DiagnosticService } from "TSTransformer/classes/DiagnosticService";
 import { Prereqs } from "TSTransformer/classes/Prereqs";
-import { isDefinitelyType, isRobloxType, isSharedTableType, walkTypes } from "TSTransformer/util/types";
+import { isDefinitelyType, isRobloxType, walkTypes } from "TSTransformer/util/types";
 import ts from "typescript";
 
 export function createObjectRest(
@@ -14,7 +14,7 @@ export function createObjectRest(
 	source: luau.AnyIdentifier,
 	keys: Array<luau.Expression>,
 ) {
-	const isUnsupported = (type: ts.Type) => isRobloxType(state)(type) && !isSharedTableType(state)(type);
+	const isUnsupported = (type: ts.Type) => isRobloxType(state)(type);
 	let unsupported = false;
 	walkTypes(type, type => {
 		unsupported ||= isDefinitelyType(type, isUnsupported);

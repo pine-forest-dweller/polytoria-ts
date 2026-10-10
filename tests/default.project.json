@@ -2,9 +2,9 @@
 	"name": "roblox-ts-tests",
 	"globIgnorePaths": ["**/package.json", "**/tsconfig.json"],
 	"tree": {
-		"$className": "DataModel",
-		"ReplicatedStorage": {
-			"$className": "ReplicatedStorage",
+		"$className": "World",
+		"Hidden": {
+			"$className": "Hidden",
 			"external": {
 				"$path": "projects/external"
 			},
@@ -24,8 +24,8 @@
 				}
 			}
 		},
-		"ServerScriptService": {
-			"$className": "ServerScriptService",
+		"ScriptService": {
+			"$className": "ScriptService",
 			"main": {
 				"$path": "out/main.server.luau"
 			},
@@ -42,8 +42,8 @@
 				}
 			}
 		},
-		"StarterGui": {
-			"$className": "StarterGui",
+		"PlayerGUI": {
+			"$className": "PlayerGUI",
 			"isolated": {
 				"$path": "out/helpers/rojo/isolated.luau"
 			}

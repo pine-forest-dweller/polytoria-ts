@@ -15,7 +15,6 @@ const PRIMITIVE_LUAU_TYPES = new Set([
 	"userdata",
 	"function",
 	"thread",
-	"vector",
 	"buffer",
 ]);
 

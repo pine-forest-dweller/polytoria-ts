@@ -5,9 +5,8 @@ import luau from "@roblox-ts/luau-ast";
  * @param serviceName The service to get from game.
  */
 export function createGetService(serviceName: string) {
-	return luau.create(luau.SyntaxKind.MethodCallExpression, {
+	return luau.create(luau.SyntaxKind.PropertyAccessExpression, {
 		expression: luau.globals.game,
-		name: "GetService",
-		args: luau.list.make(luau.string(serviceName)),
+		name: serviceName
 	});
 }

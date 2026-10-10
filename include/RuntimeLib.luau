@@ -1,14 +1,11 @@
---!strict
+local Promise = require(script.Parent:FindChild("Promise"))
 
-local Promise = require(script.Parent.Promise)
-
-local RunService = game:GetService("RunService")
-
-local OUTPUT_PREFIX = "roblox-ts: "
+local OUTPUT_PREFIX = "polytoria-ts: "
 local NODE_MODULES = "node_modules"
 local DEFAULT_SCOPE = "@rbxts"
 
 local TS = {}
+local _G = {} 
 
 TS.Promise = Promise
 
@@ -16,7 +13,7 @@ TS.Promise = Promise
 TS.__runtimeScript = script
 
 local function isPlugin(context)
-	return RunService:IsStudio() and context:FindFirstAncestorWhichIsA("Plugin") ~= nil
+	return false
 end
 
 function TS.getModule(context, scope, moduleName)
@@ -24,11 +21,6 @@ function TS.getModule(context, scope, moduleName)
 	if moduleName == nil then
 		moduleName = scope
 		scope = DEFAULT_SCOPE
-	end
-
-	-- ensure modules have fully replicated
-	if RunService:IsRunning() and RunService:IsClient() and not isPlugin(context) and not game:IsLoaded() then
-		game.Loaded:Wait()
 	end
 
 	local object = context
@@ -55,7 +47,7 @@ local registeredLibraries = {}
 
 function TS.import(context, module, ...)
 	for i = 1, select("#", ...) do
-		module = module:WaitForChild((select(i, ...)))
+		module = module:WaitChild((select(i, ...)))
 	end
 
 	if module.ClassName ~= "ModuleScript" then

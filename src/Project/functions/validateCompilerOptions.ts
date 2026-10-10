@@ -61,7 +61,7 @@ export function validateCompilerOptions(opts: ts.CompilerOptions, projectPath: s
 
 	const rbxtsModules = path.join(projectPath, NODE_MODULES, RBXTS_SCOPE);
 	if (opts.typeRoots === undefined || !validateTypeRoots(opts.typeRoots)) {
-		errors.push(`${y(`"typeRoots"`)} must contain a node_modules/@rbxts directory, such as ${y(rbxtsModules)}`);
+		errors.push(`${y(`"typeRoots"`)} must contain a node_modules/@polyts directory, such as ${y(rbxtsModules)}`);
 	}
 
 	for (const typesLocation of opts.types ?? []) {

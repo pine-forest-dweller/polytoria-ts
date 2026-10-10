@@ -36,7 +36,6 @@ export const SYMBOL_NAMES = {
 	ReadonlySet: "ReadonlySet",
 	ReadVoxelsArray: "ReadVoxelsArray",
 	Set: "Set",
-	SharedTable: "SharedTable",
 	String: "String",
 	TemplateStringsArray: "TemplateStringsArray",
 	WeakMap: "WeakMap",
@@ -74,6 +73,7 @@ function getConstructorInterface(typeChecker: ts.TypeChecker, name: string) {
 
 function getGlobalSymbolByNameOrThrow(typeChecker: ts.TypeChecker, name: string, meaning: ts.SymbolFlags) {
 	const symbol = typeChecker.resolveName(name, undefined, meaning, false);
+
 	if (symbol) {
 		return ts.skipAlias(symbol, typeChecker);
 	}

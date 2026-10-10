@@ -11,7 +11,6 @@ import {
 	isIterableType,
 	isMapType,
 	isSetType,
-	isSharedTableType,
 	isStringType,
 } from "TSTransformer/util/types";
 import ts from "typescript";
@@ -278,34 +277,6 @@ export function createArrayBindingAccessor(
 			isDefinitelyType(type, isMapType(state)),
 			node.elements.length,
 		);
-	}
-
-	if (isDefinitelyType(type, isSharedTableType(state))) {
-		// SharedTable supports generalized iteration, but not next()
-		const source = prereqs.pushToVar(parentId, "iterable");
-		const key = luau.tempId("key");
-		const value = luau.tempId("value");
-		const iterator = prereqs.pushToVar(
-			luau.call(luau.property(luau.id("coroutine"), "wrap"), [
-				luau.create(luau.SyntaxKind.FunctionExpression, {
-					parameters: luau.list.make(),
-					hasDotDotDot: false,
-					statements: luau.list.make(
-						luau.create(luau.SyntaxKind.ForStatement, {
-							ids: luau.list.make(key, value),
-							expression: source,
-							statements: luau.list.make(
-								luau.create(luau.SyntaxKind.CallStatement, {
-									expression: luau.call(luau.globals.coroutine.yield, [key, value]),
-								}),
-							),
-						}),
-					),
-				}),
-			]),
-			"iterator",
-		);
-		return createFunctionAccessor(iterator, true);
 	}
 
 	if (isDefinitelyType(type, isIterableFunctionType(state))) {
