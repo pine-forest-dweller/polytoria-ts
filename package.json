@@ -14,6 +14,7 @@
 	"scripts": {
 		"prepublishOnly": "npm run build",
 		"build": "tspc -b",
+		"test": "npm run build && npm run test-compile && npm run test-rojo && npm run test-run",
 		"build-watch": "tspc -b -w",
 		"eslint": "eslint --max-warnings 0",
 		"devlink": "npm run build && cd devlink && npm link",
