@@ -13,16 +13,16 @@ afterEach(() => fixture.close());
 
 it("resolves a changed package entry point on the next source edit", () => {
 	fixture.project("game");
-	fixture.json("node_modules/@polytoria-ts/options/package.json", { name: "@rbxts/options", types: "number.d.ts" });
-	fixture.write("node_modules/@polytoria-ts/options/number.d.ts", "export interface Options { value: number; }");
-	fixture.write("node_modules/@polytoria-ts/options/string.d.ts", "export interface Options { value: string; }");
+	fixture.json("node_modules/@rbxts/options/package.json", { name: "@rbxts/options", types: "number.d.ts" });
+	fixture.write("node_modules/@rbxts/options/number.d.ts", "export interface Options { value: number; }");
+	fixture.write("node_modules/@rbxts/options/string.d.ts", "export interface Options { value: string; }");
 	const source = 'import { Options } from "@rbxts/options"; export const value: Options = { value: 1 };';
 	fixture.write("game/src/index.ts", source);
 	fixture.write("game/src/trigger.ts", "export const changed = false;");
 	const build = fixture.createBuild();
 	expectSuccess(build.build());
 
-	fixture.json("node_modules/@polytoria-ts/options/package.json", { name: "@rbxts/options", types: "string.d.ts" });
+	fixture.json("node_modules/@rbxts/options/package.json", { name: "@rbxts/options", types: "string.d.ts" });
 	fixture.write("game/src/trigger.ts", "export const changed = true;");
 	const result = build.build([fixture.file("game/src/trigger.ts")]);
 
@@ -73,17 +73,14 @@ it("watches roots and external declarations without subscribing to installed typ
 
 it("recognizes package updates on the next source edit without watching node_modules", async () => {
 	fixture.project("game");
-	fixture.json("node_modules/@polytoria-ts/options/package.json", { name: "@rbxts/options", types: "index.d.ts" });
-	fixture.write("node_modules/@polytoria-ts/options/index.d.ts", "export interface Options { value: number; }");
+	fixture.json("node_modules/@rbxts/options/package.json", { name: "@rbxts/options", types: "index.d.ts" });
+	fixture.write("node_modules/@rbxts/options/index.d.ts", "export interface Options { value: number; }");
 	const source = 'import { Options } from "@rbxts/options"; export const options: Options = { value: 1 };';
 	fixture.write("game/src/index.ts", source);
 	const watch = await startWatch(fixture);
 	try {
 		await watch.expectNoBuild(() =>
-			fixture.write(
-				"node_modules/@polytoria-ts/options/index.d.ts",
-				"export interface Options { value: string; }",
-			),
+			fixture.write("node_modules/@rbxts/options/index.d.ts", "export interface Options { value: string; }"),
 		);
 		await watch.edit(() => fixture.write("game/src/index.ts", `${source}\nprint(options);`));
 		expect(watch.log.slice(watch.log.lastIndexOf("Starting incremental"))).toContain("TS2322");

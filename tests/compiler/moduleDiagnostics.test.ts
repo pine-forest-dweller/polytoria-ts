@@ -29,27 +29,27 @@ it.each([
 	["unmapped dependency", {}, errors.noRojoData],
 	[
 		"scope outside node_modules",
-		{ packages: { "@rbxts": { $path: "node_modules/@polytoria-ts" } } },
+		{ packages: { "@rbxts": { $path: "node_modules/@rbxts" } } },
 		errors.noPackageImportWithoutScope,
 	],
 	[
 		"node_modules without scope",
-		{ node_modules: { $path: "node_modules/@polytoria-ts" } },
+		{ node_modules: { $path: "node_modules/@rbxts" } },
 		errors.noPackageImportWithoutScope,
 	],
 ])("rejects a %s in the Rojo tree", (name, mappings, diagnostic) => {
 	const fixture = new ReferenceFixture();
 	try {
 		fixture.project("game");
-		fixture.json("node_modules/@polytoria-ts/example/package.json", {
-			name: "@polytoria-ts/example",
+		fixture.json("node_modules/@rbxts/example/package.json", {
+			name: "@rbxts/example",
 			types: "index.d.ts",
 			main: "init.luau",
 		});
-		fixture.write("node_modules/@polytoria-ts/example/index.d.ts", "export declare const value: number;");
-		fixture.write("node_modules/@polytoria-ts/example/init.luau", "return { value = 1 }");
+		fixture.write("node_modules/@rbxts/example/index.d.ts", "export declare const value: number;");
+		fixture.write("node_modules/@rbxts/example/init.luau", "return { value = 1 }");
 		fixture.rojo(mappings);
-		fixture.write("game/src/index.ts", 'import "@polytoria-ts/example";');
+		fixture.write("game/src/index.ts", 'import "@rbxts/example";');
 
 		const result = fixture.createBuild().build();
 

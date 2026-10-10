@@ -31,7 +31,7 @@ export class ReferenceFixture {
 				target: "ESNext",
 				incremental: true,
 				skipLibCheck: true,
-				typeRoots: ["node_modules/@polytoria-ts"],
+				typeRoots: ["node_modules/@rbxts"],
 				types: ["compiler-types", "types"],
 			},
 		});

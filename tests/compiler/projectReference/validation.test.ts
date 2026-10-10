@@ -115,10 +115,10 @@ it("cleans empty output directories while retaining git metadata", () => {
 
 it("imports a package subpath without a package entrypoint mapping", () => {
 	fixture.project("game");
-	fixture.json("node_modules/@polytoria-ts/example/package.json", { name: "@rbxts/example", version: "1.0.0" });
-	fixture.write("node_modules/@polytoria-ts/example/helper.d.ts", "export declare const value: number;");
-	fixture.write("node_modules/@polytoria-ts/example/helper.lua", "return { value = 8 }");
-	fixture.rojo({ node_modules: { "@rbxts": { $path: "node_modules/@polytoria-ts" } } });
+	fixture.json("node_modules/@rbxts/example/package.json", { name: "@rbxts/example", version: "1.0.0" });
+	fixture.write("node_modules/@rbxts/example/helper.d.ts", "export declare const value: number;");
+	fixture.write("node_modules/@rbxts/example/helper.lua", "return { value = 8 }");
+	fixture.rojo({ node_modules: { "@rbxts": { $path: "node_modules/@rbxts" } } });
 	fixture.write("game/src/index.ts", 'import { value } from "@rbxts/example/helper"; export const result = value;');
 
 	expectSuccess(fixture.createBuild().build());

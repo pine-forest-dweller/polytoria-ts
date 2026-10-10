@@ -170,3 +170,14 @@ it.each([false, true])("matches a clean build after CLI watch edits and recovery
 		await watch.close();
 	}
 });
+
+it("runs the representative game through Rojo and Lune", () => {
+	createRepresentativeProject(fixture);
+	expectSuccess(fixture.createBuild().build());
+	const place = fixture.file("representative.rbxl");
+	execFileSync("rojo", ["build", fixture.file("default.project.json"), "-o", place], { encoding: "utf8" });
+	const output = execFileSync("lune", ["run", path.join(PACKAGE_ROOT, "tests/runTestsWithLune.luau"), place], {
+		encoding: "utf8",
+	});
+	expect(output).toContain("representative game passed");
+});

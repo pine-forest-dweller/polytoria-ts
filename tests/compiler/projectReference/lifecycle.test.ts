@@ -226,21 +226,21 @@ it("preserves a supplied host's resolution invalidation hook across rebuilds", (
 it("reuses redirected declarations for duplicate package installations", () => {
 	fixture.project("game");
 	for (const name of ["left", "right"]) {
-		const root = `node_modules/@polytoria-ts/${name}`;
+		const root = `node_modules/@rbxts/${name}`;
 		fixture.json(`${root}/package.json`, { name: `@rbxts/${name}`, version: "1.0.0", types: "index.d.ts" });
 		fixture.write(`${root}/index.d.ts`, 'export { Value } from "@rbxts/duplicate";');
-		fixture.json(`${root}/node_modules/@polytoria-ts/duplicate/package.json`, {
+		fixture.json(`${root}/node_modules/@rbxts/duplicate/package.json`, {
 			name: "@rbxts/duplicate",
 			version: "1.0.0",
 			types: "index.d.ts",
 		});
 		fixture.write(
-			`${root}/node_modules/@polytoria-ts/duplicate/index.d.ts`,
+			`${root}/node_modules/@rbxts/duplicate/index.d.ts`,
 			"export declare class Value { private identity: unknown; }",
 		);
 	}
 	const source =
-		'import type { Value as Left } from "@polytoria-ts/left"; import type { Value as Right } from "@polytoria-ts/right"; export function convert(value: Left): Right { return value; }';
+		'import type { Value as Left } from "@rbxts/left"; import type { Value as Right } from "@rbxts/right"; export function convert(value: Left): Right { return value; }';
 	fixture.write("game/src/index.ts", source);
 	const build = fixture.createBuild();
 	expectSuccess(build.build());

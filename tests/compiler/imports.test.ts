@@ -64,11 +64,8 @@ it("imports a local module in VirtualProject without project references", () => 
 it("imports a package described by an ambient module declaration", () => {
 	const project = createTestProject();
 	project.vfs.writeFile("/src/ambient.d.ts", 'declare module "@rbxts/example" { export const value: number; }');
-	project.vfs.writeFile("/node_modules/@polytoria-ts/example/index.d.ts", "export declare const value: number;");
-	project.setMapping(
-		"/node_modules/@polytoria-ts/example/index.d.ts",
-		"/node_modules/@polytoria-ts/example/init.luau",
-	);
+	project.vfs.writeFile("/node_modules/@rbxts/example/index.d.ts", "export declare const value: number;");
+	project.setMapping("/node_modules/@rbxts/example/index.d.ts", "/node_modules/@rbxts/example/init.luau");
 
 	const output = project.compileSource('import { value } from "@rbxts/example"; export { value };');
 
@@ -77,11 +74,8 @@ it("imports a package described by an ambient module declaration", () => {
 
 it("imports a scoped dependency from a package", () => {
 	const project = createTestProject({ type: ProjectType.Package });
-	project.vfs.writeFile("/node_modules/@polytoria-ts/example/index.d.ts", "export declare const value: number;");
-	project.setMapping(
-		"/node_modules/@polytoria-ts/example/index.d.ts",
-		"/node_modules/@polytoria-ts/example/init.luau",
-	);
+	project.vfs.writeFile("/node_modules/@rbxts/example/index.d.ts", "export declare const value: number;");
+	project.setMapping("/node_modules/@rbxts/example/index.d.ts", "/node_modules/@rbxts/example/init.luau");
 
 	const output = project.compileSource('import { value } from "@rbxts/example"; export const result = value;');
 

@@ -10,8 +10,10 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@polytoria-ts/compiler-types": "github:pine-forest-dweller/polyts-compiler-types",
+		"@rbxts/compiler-types": "github:roblox-ts/compiler-types",
+		"@rbxts/roact": "github:roblox-ts/roact",
+		"@rbxts/services": "^1.6.0",
 		"@rbxts/testez": "^0.4.2-ts.0",
-		"@polytoria-ts/types": "^1.0.950"
+		"@rbxts/types": "^1.0.950"
 	}
 }

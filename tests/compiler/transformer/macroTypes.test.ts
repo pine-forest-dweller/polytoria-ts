@@ -5,7 +5,7 @@ import { createTestProject } from "../createTestProject";
 
 function changeCompilerTypes(file: string, rewrite: (source: string) => string) {
 	const project = createTestProject();
-	const path = `/node_modules/@polytoria-ts/compiler-types/types/${file}.d.ts`;
+	const path = `/node_modules/@rbxts/compiler-types/types/${file}.d.ts`;
 	const source = project.vfs.readFile(path);
 	assert(source !== undefined);
 	const changed = rewrite(source);
