@@ -1,15 +1,15 @@
 {
-	"name": "roblox-ts",
+	"name": "polytoria-ts",
 	"version": "3.0.0",
-	"description": "A TypeScript-to-Luau Compiler for Roblox",
+	"description": "A TypeScript-to-Luau Compiler for Polytoria :)",
 	"main": "out/CLI/index.js",
 	"browser": "out/CLI/browser.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/roblox-ts/roblox-ts.git"
+		"url": "git+https://github.com/pine-forest-dweller/polytoria-ts.git"
 	},
 	"bin": {
-		"rbxtsc": "out/CLI/cli.js"
+		"ptsc": "out/CLI/cli.js"
 	},
 	"scripts": {
 		"prepublishOnly": "npm run build",
@@ -18,12 +18,7 @@
 		"eslint": "eslint --max-warnings 0",
 		"devlink": "npm run build && cd devlink && npm link",
 		"update-test-types": "cd tests && npm install github:roblox-ts/compiler-types @rbxts/types@latest && npm install",
-		"test": "npm run build && npm run test-compile && npm run test-rojo && npm run test-run",
-		"test-compile": "jest --coverage",
-		"test-rojo": "rojo build tests -o ./tests/test.rbxl",
-		"test-run": "lune run ./tests/runTestsWithLune.luau ./tests/test.rbxl",
-		"test-roblox": "npm run build && npm run test-compile && npm run test-rojo && npm run run-in-roblox",
-		"run-in-roblox": "run-in-roblox --place ./tests/test.rbxl --script ./tests/out/main.server.luau"
+		"test-compile": "jest --coverage"
 	},
 	"author": "",
 	"license": "MIT",
