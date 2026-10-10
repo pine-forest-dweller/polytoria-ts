@@ -61,7 +61,9 @@ export function validateCompilerOptions(opts: ts.CompilerOptions, projectPath: s
 
 	const rbxtsModules = path.join(projectPath, NODE_MODULES, RBXTS_SCOPE);
 	if (opts.typeRoots === undefined || !validateTypeRoots(opts.typeRoots)) {
-		errors.push(`${y(`"typeRoots"`)} must contain a node_modules/@polytoria-ts directory, such as ${y(rbxtsModules)}`);
+		errors.push(
+			`${y(`"typeRoots"`)} must contain a node_modules/@polytoria-ts directory, such as ${y(rbxtsModules)}`,
+		);
 	}
 
 	for (const typesLocation of opts.types ?? []) {

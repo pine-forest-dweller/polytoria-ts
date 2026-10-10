@@ -7,6 +7,6 @@ import luau from "@roblox-ts/luau-ast";
 export function createGetService(serviceName: string) {
 	return luau.create(luau.SyntaxKind.PropertyAccessExpression, {
 		expression: luau.globals.game,
-		name: serviceName
+		name: serviceName,
 	});
 }
