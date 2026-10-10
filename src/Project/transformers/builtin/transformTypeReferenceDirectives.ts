@@ -1,6 +1,6 @@
 import ts from "typescript";
 
-const SCOPE = "@rbxts/";
+const SCOPE = "@polytoria-ts/";
 const PACKAGE = "types";
 
 export function transformTypeReferenceDirectives() {

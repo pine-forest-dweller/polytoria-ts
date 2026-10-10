@@ -240,7 +240,7 @@ it("reuses redirected declarations for duplicate package installations", () => {
 		);
 	}
 	const source =
-		'import type { Value as Left } from "@rbxts/left"; import type { Value as Right } from "@rbxts/right"; export function convert(value: Left): Right { return value; }';
+		'import type { Value as Left } from "@polytoria-ts/left"; import type { Value as Right } from "@polytoria-ts/right"; export function convert(value: Left): Right { return value; }';
 	fixture.write("game/src/index.ts", source);
 	const build = fixture.createBuild();
 	expectSuccess(build.build());
