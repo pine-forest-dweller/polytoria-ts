@@ -1,5 +1,5 @@
 {
-	"name": "polytoria-ts",
+	"name": "@polytoria-ts/compiler",
 	"version": "3.0.0",
 	"description": "A TypeScript-to-Luau Compiler for Polytoria :)",
 	"main": "out/CLI/index.js",
@@ -18,8 +18,7 @@
 		"eslint": "eslint --max-warnings 0",
 		"devlink": "npm run build && cd devlink && npm link",
 		"update-test-types": "cd tests && npm install github:roblox-ts/compiler-types @rbxts/types@latest && npm install",
-		"test-compile": "jest --coverage",
-		"prepare": "npm run build"
+		"test-compile": "jest --coverage"
 	},
 	"author": "",
 	"license": "MIT",
