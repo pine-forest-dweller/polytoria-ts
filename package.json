@@ -18,7 +18,8 @@
 		"eslint": "eslint --max-warnings 0",
 		"devlink": "npm run build && cd devlink && npm link",
 		"update-test-types": "cd tests && npm install github:roblox-ts/compiler-types @rbxts/types@latest && npm install",
-		"test-compile": "jest --coverage"
+		"test-compile": "jest --coverage",
+		"prepare": "npm run build"
 	},
 	"author": "",
 	"license": "MIT",
