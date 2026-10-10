@@ -48,7 +48,7 @@ it.each(["../out/game", "../out/game/nested"])(
 			"game/src/index.ts",
 			'import type { External } from "../../external/types"; export const value: External = { value: 1 };',
 		);
-		const paths = ["external/types.d.ts", "node_modules/@rbxts/compiler-types/types/core.d.ts"];
+		const paths = ["external/types.d.ts", "node_modules/@polytoria-ts/compiler-types/types/core.d.ts"];
 		const original = paths.map(file => fixture.read(file));
 		const timestamp = new Date("2020-01-01T00:00:00Z");
 		for (const file of paths) {

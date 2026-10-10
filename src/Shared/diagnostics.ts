@@ -236,15 +236,15 @@ export const errors = {
 		isPackage && suggestion(`Did you forget to add a custom npm scope to your default.project.json?`),
 	]),
 	noPackageImportWithoutScope: errorWithContext((path: string, rbxPath: RbxPath) => [
-		`Imported package Roblox path is missing an npm scope!`,
+		`Imported package Polytoria path is missing an npm scope!`,
 		`Package path: ${path}`,
-		`Roblox path: ${rbxPath.join(".")}`,
+		`Polytoria path: ${rbxPath.join(".")}`,
 		suggestion(
 			`You might need to update your "node_modules" in default.project.json to match:
 "node_modules": {
 	"$className": "Folder",
-	"@rbxts": {
-		"$path": "node_modules/@rbxts"
+	"@polyts": {
+		"$path": "node_modules/@polytoria-ts"
 	}
 }`,
 		),

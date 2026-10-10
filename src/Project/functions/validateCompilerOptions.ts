@@ -70,7 +70,7 @@ export function validateCompilerOptions(opts: ts.CompilerOptions, projectPath: s
 		// Technically checked to exist above
 		// But if that's an error, we still want this error too,
 		// To avoid "fix one error, get a new one on the next compile"
-		const typeRoots = opts.typeRoots ?? ["node_modules/@rbxts"];
+		const typeRoots = opts.typeRoots ?? ["node_modules/@polytoria-ts"];
 
 		if (
 			!typeRoots.some(typeRoot => {

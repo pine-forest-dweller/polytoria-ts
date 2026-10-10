@@ -12,7 +12,7 @@ export function createTestProject(projectOptions?: Partial<ProjectOptions>) {
 }
 
 export function loadTestTypes(project: VirtualProject) {
-	const root = path.join(PACKAGE_ROOT, "tests/node_modules/@rbxts");
+	const root = path.join(PACKAGE_ROOT, "tests/node_modules/@polytoria-ts");
 	function load(directory: string) {
 		for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
 			const file = path.join(directory, entry.name);
@@ -20,7 +20,7 @@ export function loadTestTypes(project: VirtualProject) {
 				load(file);
 			} else if (entry.name.endsWith(".d.ts") || entry.name === "package.json") {
 				project.vfs.writeFile(
-					`/node_modules/@rbxts/${path.relative(root, file).split(path.sep).join("/")}`,
+					`/node_modules/@polytoria-ts/${path.relative(root, file).split(path.sep).join("/")}`,
 					fs.readFileSync(file, "utf8"),
 				);
 			}

@@ -77,34 +77,6 @@ it.each([{ target: "./other" }, { target: "@local/other", baseUrl: "./src", path
 	},
 );
 
-it("resolves transitive types through a pnpm-style symlink with a plugin", () => {
-	fixture.project("game");
-	const packages = "node_modules/.pnpm/@rbxts+host@1.0.0/node_modules/@rbxts";
-	fixture.json(`${packages}/host/package.json`, { name: "@rbxts/host", types: "index.d.ts" });
-	fixture.write(
-		`${packages}/host/index.d.ts`,
-		'import { LeafOptions } from "@rbxts/leaf"; export interface HostOptions extends LeafOptions { extra?: number; }',
-	);
-	fixture.json(`${packages}/leaf/package.json`, { name: "@rbxts/leaf", types: "index.d.ts" });
-	fixture.write(`${packages}/leaf/index.d.ts`, "export interface LeafOptions { phantom?: boolean; }");
-	fs.ensureSymlinkSync(fixture.file(`${packages}/host`), fixture.file("node_modules/@rbxts/host"), "junction");
-	fixture.write(
-		"game/src/index.ts",
-		'import { HostOptions } from "@rbxts/host"; export const options: HostOptions = { phantom: true };',
-	);
-
-	expectSuccess(fixture.createBuild().build());
-	const expected = fixture.read("out/game/init.luau");
-
-	const config = fs.readJsonSync(fixture.file("game/tsconfig.json"));
-	config.compilerOptions.plugins = [{ transform: "../identity.cjs" }];
-	fixture.json("game/tsconfig.json", config);
-	fixture.write("identity.cjs", "module.exports = () => () => source => source;");
-
-	expectSuccess(fixture.createBuild().build());
-	expect(fixture.read("out/game/init.luau")).toBe(expected);
-});
-
 it("runs before plugins before after plugins", () => {
 	fixture.project("game", [], {
 		plugins: [

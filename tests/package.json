@@ -11,8 +11,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@polytoria-ts/compiler-types": "github:pine-forest-dweller/polyts-compiler-types",
-		"@rbxts/services": "^1.6.0",
 		"@rbxts/testez": "^0.4.2-ts.0",
-		"@rbxts/types": "^1.0.950"
+		"@polytoria-ts/types": "^1.0.950"
 	}
 }

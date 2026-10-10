@@ -54,7 +54,7 @@ it("keeps sibling rootDirs with a shared name prefix under their common output d
 });
 
 it("ignores additional missing type roots", () => {
-	fixture.project("game", [], { typeRoots: ["../node_modules/@rbxts", "../missing"] });
+	fixture.project("game", [], { typeRoots: ["../node_modules/@polytoria-ts", "../missing"] });
 
 	expectSuccess(fixture.createBuild().build());
 });
