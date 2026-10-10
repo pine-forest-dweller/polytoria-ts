@@ -55,22 +55,3 @@ print(value.value)
 return nil
 "
 `;
-
-exports[`preserves unmarked import-equals side effects with noCheck (verbatimModuleSyntax: true) 1`] = `
-"local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("include"):WaitForChild("RuntimeLib"))
-TS.import(script, game:GetService("ReplicatedStorage"), "game", "shape")
-local value = {
-	value = 42,
-}
-print(value.value)
-return nil
-"
-`;
-
-exports[`uses relative imports within an isolated game container 1`] = `
-"local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("include"):WaitForChild("RuntimeLib"))
-local value = TS.import(script, script, "value").value
-print(value)
-return nil
-"
-`;
