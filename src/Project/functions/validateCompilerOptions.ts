@@ -24,7 +24,10 @@ function validateTypeRoots(typeRoots: Array<string>) {
 		const resolvedPath = path.resolve(typeRoot);
 
 		// allow hoisted dependencies without requiring VirtualProject's directories to exist on disk
-		if (path.basename(resolvedPath) === RBXTS_SCOPE && path.basename(path.dirname(resolvedPath)) === NODE_MODULES) {
+		if (
+			(path.basename(resolvedPath) === RBXTS_SCOPE || path.basename(resolvedPath) == "@rbxts") &&
+			path.basename(path.dirname(resolvedPath)) === NODE_MODULES
+		) {
 			return true;
 		}
 	}

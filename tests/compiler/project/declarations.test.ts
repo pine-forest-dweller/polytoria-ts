@@ -116,7 +116,7 @@ it("scopes Roblox type references while preserving other references", () => {
 
 	expect(result).toBe(source);
 	expect(source.typeReferenceDirectives).toEqual([
-		{ ...original[0], fileName: "@rbxts/types", end: original[0].end + "@rbxts/".length },
+		{ ...original[0], fileName: "@polytoria-ts/types", end: original[0].end + "@polytoria-ts/".length },
 		original[1],
 	]);
 });

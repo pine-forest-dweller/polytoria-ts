@@ -466,27 +466,6 @@ export = () => {
 		}
 	});
 
-	it("collects SharedTable rest and stops after exhaustion", () => {
-		const source = new SharedTable();
-		source.a = 1;
-		source.b = 2;
-		const [first, ...rest] = source;
-		assert(rest.size() === 1 && first[0] !== rest[0][0]);
-		assert(source[first[0]] === first[1] && source[rest[0][0]] === rest[0][1]);
-
-		const [, , missing = ["default", 9], ...empty] = source;
-		assert(missing[0] === "default" && empty.size() === 0);
-
-		const [...all] = source;
-		assert(all.size() === 2);
-		let assignment: Array<[string | number, SharedTableValue]> = [];
-		[, ...assignment] = source;
-		assert(assignment.size() === 1);
-
-		const { a, ...objectRest } = source;
-		assert(a === 1 && objectRest.b === 2);
-	});
-
 	it("creates independent plain objects with zero, one, or multiple exclusions", () => {
 		const source = setmetatable({ a: 1, b: 2, c: 3 }, {});
 		const { ...all } = source;

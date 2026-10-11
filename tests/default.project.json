@@ -1,31 +1,13 @@
 {
-	"name": "roblox-ts-tests",
-	"globIgnorePaths": ["**/package.json", "**/tsconfig.json"],
+	"name": "polytoria-ts-game",
+	"globIgnorePaths": [
+		"**/package.json",
+		"**/tsconfig.json"
+	],
 	"tree": {
 		"$className": "DataModel",
-		"ReplicatedStorage": {
-			"$className": "ReplicatedStorage",
-			"external": {
-				"$path": "projects/external"
-			},
-			"referenceCommon": {
-				"$path": "projects/common/out"
-			},
-			"referenceShared": {
-				"$path": "projects/shared/out"
-			},
-			"include": {
-				"$path": "include",
-				"node_modules": {
-					"$className": "Folder",
-					"@rbxts": {
-						"$path": "node_modules/@rbxts"
-					}
-				}
-			}
-		},
-		"ServerScriptService": {
-			"$className": "ServerScriptService",
+		"ScriptService": {
+			"$className": "ScriptService",
 			"main": {
 				"$path": "out/main.server.luau"
 			},
@@ -42,11 +24,47 @@
 				}
 			}
 		},
-		"StarterGui": {
-			"$className": "StarterGui",
+		"Hidden": {
+			"$className": "Hidden",
+			"external": {
+				"$path": "projects/external"
+			},
+			"referenceCommon": {
+				"$path": "projects/common/out"
+			},
+			"referenceShared": {
+				"$path": "projects/shared/out"
+			},
+			"include": {
+				"$path": "include",
+				"node_modules": {
+					"$className": "Folder",
+					"@polytoria-ts": {
+						"$path": "node_modules/@polytoria-ts"
+					},
+					"@rbxts": {
+						"$path": "node_modules/@rbxts"
+					}
+				}
+			},
+			"TS": {
+				"$path": "out/shared"
+			}
+		},
+		"PlayerDefaults": {
+			"$className": "PlayerDefaults",
+			"TS": {
+				"$path": "out/client"
+			}
+		},
+		"PlayerGUI": {
+			"$className": "PlayerGUI",
 			"isolated": {
 				"$path": "out/helpers/rojo/isolated.luau"
 			}
+		},
+		"Environment": {
+			"$className": "Environment"
 		}
 	}
 }
