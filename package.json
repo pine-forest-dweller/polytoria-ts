@@ -1,5 +1,5 @@
 {
-	"name": "@polytoria-ts/compiler",
+	"name": "polytoria-ts",
 	"version": "3.0.2",
 	"description": "A TypeScript-to-Luau Compiler for Polytoria :)",
 	"main": "out/CLI/index.js",
