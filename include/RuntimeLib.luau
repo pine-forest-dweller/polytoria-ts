@@ -17,6 +17,7 @@ local function isPlugin(context)
 end
 
 function TS.getModule(context, scope, moduleName)
+	local scope = string.gsub(scope, "^@", "") -- strip leading @
 	-- legacy call signature
 	if moduleName == nil then
 		moduleName = scope
@@ -25,11 +26,11 @@ function TS.getModule(context, scope, moduleName)
 
 	local object = context
 	repeat
-		local nodeModulesFolder = object:FindFirstChild(NODE_MODULES)
+		local nodeModulesFolder = object:FindChild(NODE_MODULES)
 		if nodeModulesFolder then
-			local scopeFolder = nodeModulesFolder:FindFirstChild(scope)
+			local scopeFolder = nodeModulesFolder:FindChild(scope)
 			if scopeFolder then
-				local module = scopeFolder:FindFirstChild(moduleName)
+				local module = scopeFolder:FindChild(moduleName)
 				if module then
 					return module
 				end
@@ -47,11 +48,16 @@ local registeredLibraries = {}
 
 function TS.import(context, module, ...)
 	for i = 1, select("#", ...) do
-		module = module:WaitChild((select(i, ...)))
+		local clean = string.gsub(select(i, ...), "^@", "")
+		module = module:WaitChild(clean)
 	end
 
 	if module.ClassName ~= "ModuleScript" then
-		error(OUTPUT_PREFIX .. "Failed to import! Expected ModuleScript, got " .. module.ClassName, 2)
+		if module.ClassName == "Folder" and module.Name == "out" then
+			module = module:WaitChild("init")
+		else
+			error(OUTPUT_PREFIX .. "Failed to import! Expected ModuleScript, got " .. module.ClassName, 2)
+		end
 	end
 
 	currentlyLoading[context] = module
