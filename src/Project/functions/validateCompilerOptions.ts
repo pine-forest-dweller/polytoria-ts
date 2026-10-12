@@ -1,7 +1,7 @@
 import fs from "fs";
 import kleur from "kleur";
 import path from "path";
-import { DTS_EXT, NODE_MODULES, RBXTS_SCOPE } from "Shared/constants";
+import { DTS_EXT, NODE_MODULES, RBXTS_SCOPE, RBXTS_SCOPE_LEGACY } from "Shared/constants";
 import { ProjectError } from "Shared/errors/ProjectError";
 import ts from "typescript";
 
@@ -25,7 +25,7 @@ function validateTypeRoots(typeRoots: Array<string>) {
 
 		// allow hoisted dependencies without requiring VirtualProject's directories to exist on disk
 		if (
-			(path.basename(resolvedPath) === RBXTS_SCOPE || path.basename(resolvedPath) == "@rbxts") &&
+			(path.basename(resolvedPath) === RBXTS_SCOPE || path.basename(resolvedPath) == RBXTS_SCOPE_LEGACY) &&
 			path.basename(path.dirname(resolvedPath)) === NODE_MODULES
 		) {
 			return true;

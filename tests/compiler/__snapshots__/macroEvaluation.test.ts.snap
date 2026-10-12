@@ -1,13 +1,14 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`macro emit bracket native method 1`] = `
-"-- ▼ ReadonlySet.size ▼
+"local _fn = workspace.SetAttribute
+-- ▼ ReadonlySet.size ▼
 local _size = 0
 for _ in values do
 	_size += 1
 end
 -- ▲ ReadonlySet.size ▲
-workspace:SetAttribute("size", _size)
+_fn(workspace, "size", _size)
 return nil
 "
 `;
@@ -74,13 +75,14 @@ return nil
 
 exports[`macro emit effectful native receiver 1`] = `
 "local _self = getPart()
+local _fn = _self.SetAttribute
 -- ▼ ReadonlySet.size ▼
 local _size = 0
 for _ in values do
 	_size += 1
 end
 -- ▲ ReadonlySet.size ▲
-_self:SetAttribute("size", _size)
+_fn(_self, "size", _size)
 return nil
 "
 `;
@@ -181,19 +183,21 @@ return nil
 `;
 
 exports[`macro emit native method with argument prerequisites 1`] = `
-"-- ▼ ReadonlySet.size ▼
+"local _fn = workspace.SetAttribute
+-- ▼ ReadonlySet.size ▼
 local _size = 0
 for _ in values do
 	_size += 1
 end
 -- ▲ ReadonlySet.size ▲
-workspace:SetAttribute("size", _size)
+_fn(workspace, "size", _size)
 return nil
 "
 `;
 
 exports[`macro emit native receiver rebinding 1`] = `
 "local _self = part
+local _fn = _self.SetAttribute
 local _exp = { 1 }
 local _arg0 = function()
 	part = Instance.new("Part")
@@ -205,7 +209,7 @@ for _k, _v in _exp do
 	_newValue[_k] = _arg0(_v, _k - 1, _exp)
 end
 -- ▲ ReadonlyArray.map ▲
-_self:SetAttribute("value", _newValue[1])
+_fn(_self, "value", _newValue[1])
 return nil
 "
 `;
@@ -213,6 +217,7 @@ return nil
 exports[`macro emit nested optional native calls 1`] = `
 "local _result = model
 if _result ~= nil then
+	local _fn = _result.SetAttribute
 	local _result_1 = model
 	if _result_1 ~= nil then
 		_result_1 = _result_1:GetAttribute("MaxHealth")
@@ -221,7 +226,7 @@ if _result ~= nil then
 	if _condition == nil then
 		_condition = props.maxHealth
 	end
-	_result:SetAttribute("Health", _condition)
+	_fn(_result, "Health", _condition)
 end
 return nil
 "
@@ -236,13 +241,14 @@ return nil
 exports[`macro emit optional bracket native method 1`] = `
 "local _result = model
 if _result ~= nil then
+	local _fn = _result.SetAttribute
 	-- ▼ ReadonlySet.size ▼
 	local _size = 0
 	for _ in values do
 		_size += 1
 	end
 	-- ▲ ReadonlySet.size ▲
-	_result:SetAttribute("size", _size)
+	_fn(_result, "size", _size)
 end
 return nil
 "
@@ -257,13 +263,14 @@ return nil
 exports[`macro emit optional native method 1`] = `
 "local _result = model
 if _result ~= nil then
+	local _fn = _result.SetAttribute
 	-- ▼ ReadonlySet.size ▼
 	local _size = 0
 	for _ in values do
 		_size += 1
 	end
 	-- ▲ ReadonlySet.size ▲
-	_result:SetAttribute("size", _size)
+	_fn(_result, "size", _size)
 end
 return nil
 "
@@ -272,6 +279,7 @@ return nil
 exports[`macro emit optional native receiver rebinding 1`] = `
 "local _result = model
 if _result ~= nil then
+	local _fn = _result.SetAttribute
 	local _exp = { 1 }
 	local _arg0 = function()
 		model = nil
@@ -283,7 +291,7 @@ if _result ~= nil then
 		_newValue[_k] = _arg0(_v, _k - 1, _exp)
 	end
 	-- ▲ ReadonlyArray.map ▲
-	_result:SetAttribute("value", _newValue[1])
+	_fn(_result, "value", _newValue[1])
 end
 return nil
 "

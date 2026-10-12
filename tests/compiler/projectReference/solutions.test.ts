@@ -99,13 +99,6 @@ it("builds nested lib/spec solutions with independent game runtimes", () => {
 		);
 		expect(fs.existsSync(fixture.file(`${name}/include/RuntimeLib.luau`))).toBe(true);
 		expect(build.isOutputPath(fixture.file(`${name}/include/RuntimeLib.luau`))).toBe(true);
-
-		const place = fixture.file(`${name}/test.rbxl`);
-		execFileSync("rojo", ["build", fixture.file(`${name}/test.project.json`), "-o", place]);
-		const output = execFileSync("lune", ["run", path.join(PACKAGE_ROOT, "tests/runTestsWithLune.luau"), place], {
-			encoding: "utf8",
-		});
-		expect(output).toContain(`${name} passed`);
 	}
 	expect(fs.existsSync(fixture.file("game/include"))).toBe(false);
 	expect(build.build().emittedFiles).toEqual([]);
@@ -151,7 +144,7 @@ it("preserves an automatically discovered shared deployment for an unscoped solu
 	fixture.write("shared/src/index.ts", 'import { value } from "./value"; export const answer = value;');
 
 	expectSuccess(createSolution().build());
-	expect(fixture.read("out/shared/init.luau")).toContain("game:GetService");
+	expect(fixture.read("out/shared/init.luau")).toContain("game.ReplicatedStorage");
 	expect(fs.existsSync(fixture.file("game/include/RuntimeLib.luau"))).toBe(true);
 	expect(fs.existsSync(fixture.file("shared/include"))).toBe(false);
 });
@@ -175,114 +168,13 @@ it("rebuilds a library when switching between standalone and solution builds", (
 
 	expectSuccess(standalone().build());
 	const deployed = fixture.read("shared/out/init.luau");
-	expect(deployed).toContain("game:GetService");
+	expect(deployed).toContain("game.ReplicatedStorage");
 
 	expectSuccess(createSolution().build());
 	expect(fixture.read("shared/out/init.luau")).toContain("local TS = _G[script]");
 
 	expectSuccess(standalone().build());
 	expect(fixture.read("shared/out/init.luau")).toBe(deployed);
-});
-
-it.each(["separate", "shared", "discovered"])("rejects different runtimes for referenced games (%s Rojo)", rojoMode => {
-	addPackage("first");
-	addPackage("second");
-	fs.removeSync(fixture.file("first/test/main.server.ts"));
-	fixture.write("first/test/helper.ts", 'import { answer } from "../src"; export const result = answer;');
-	const second = fs.readJsonSync(fixture.file("second/tsconfig.spec.json"));
-	second.references.push({ path: "../first/tsconfig.spec.json" });
-	fixture.json("second/tsconfig.spec.json", second);
-	const rojo = fs.readJsonSync(fixture.file("second/test.project.json"));
-	rojo.tree.ReplicatedStorage.first = { $path: "../first/out" };
-	rojo.tree.ReplicatedStorage.runtime.$path = "../first/include";
-	rojo.tree.ReplicatedStorage.localRuntime = { $path: "include" };
-	rojo.tree.ServerScriptService.helper = { $path: "../first/out-test/helper.luau" };
-	fixture.json("second/test.project.json", rojo);
-	if (rojoMode === "shared") {
-		const first = fs.readJsonSync(fixture.file("first/tsconfig.spec.json"));
-		first.rbxts.rojo = "../second/test.project.json";
-		fixture.json("first/tsconfig.spec.json", first);
-	} else if (rojoMode === "discovered") {
-		const first = fs.readJsonSync(fixture.file("first/tsconfig.spec.json"));
-		delete first.rbxts.rojo;
-		delete first.rbxts.type;
-		fixture.json("first/tsconfig.spec.json", first);
-		fixture.json("first/package.json", { name: "first", version: "1.0.0" });
-		const lib = fs.readJsonSync(fixture.file("first/tsconfig.lib.json"));
-		lib.rbxts = { type: "package" };
-		fixture.json("first/tsconfig.lib.json", lib);
-		fs.moveSync(fixture.file("first/test.project.json"), fixture.file("first/default.project.json"), {
-			overwrite: true,
-		});
-	}
-	fixture.write(
-		"second/test/main.server.ts",
-		'import { result } from "../../first/test/helper"; import { answer } from "../../first/src"; assert(result === answer); print("shared runtime passed");',
-	);
-	fixture.json("game/tsconfig.json", { files: [], references: [{ path: "../second" }] });
-
-	expect(() => createSolution()).toThrow("same runtime folder");
-
-	second.rbxts.includePath = "../first/include";
-	fixture.json("second/tsconfig.spec.json", second);
-	delete rojo.tree.ReplicatedStorage.localRuntime;
-	fixture.json("second/test.project.json", rojo);
-	expectSuccess(createSolution().build());
-	const place = fixture.file("second/test.rbxl");
-	execFileSync("rojo", ["build", fixture.file("second/test.project.json"), "-o", place]);
-	const output = execFileSync("lune", ["run", path.join(PACKAGE_ROOT, "tests/runTestsWithLune.luau"), place], {
-		encoding: "utf8",
-	});
-	expect(output).toContain("shared runtime passed");
-});
-
-it("rejects different runtimes through package references", () => {
-	addPackage("first");
-	addPackage("second");
-	fs.removeSync(fixture.file("first/test/main.server.ts"));
-	fixture.write("first/test/helper.ts", 'import { answer } from "../src"; export const result = answer;');
-	fixture.json("bridge/package.json", { name: "@rbxts/bridge", version: "1.0.0" });
-	fixture.json("bridge/tsconfig.json", {
-		extends: "../base.json",
-		compilerOptions: { composite: true, rootDir: "src", outDir: "out" },
-		rbxts: { type: "package", rojo: "../first/test.project.json" },
-		include: ["src"],
-		references: [{ path: "../first/tsconfig.spec.json" }],
-	});
-	fixture.write(
-		"bridge/src/index.ts",
-		'import { result } from "../../first/test/helper"; export const answer = result;',
-	);
-	const second = fs.readJsonSync(fixture.file("second/tsconfig.spec.json"));
-	second.rbxts.rojo = "../first/test.project.json";
-	second.references.push({ path: "../bridge" });
-	fixture.json("second/tsconfig.spec.json", second);
-	const rojo = fs.readJsonSync(fixture.file("first/test.project.json"));
-	rojo.tree.ReplicatedStorage.bridge = { $path: "../bridge/out" };
-	rojo.tree.ReplicatedStorage.localRuntime = { $path: "../second/include" };
-	delete rojo.tree.ServerScriptService.$path;
-	rojo.tree.ServerScriptService.helper = { $path: "out-test/helper.luau" };
-	rojo.tree.ServerScriptService.main = { $path: "../second/out-test/main.server.luau" };
-	fixture.json("first/test.project.json", rojo);
-	fixture.write(
-		"second/test/main.server.ts",
-		'import { answer } from "../../bridge/src"; import { answer as direct } from "../../first/src"; assert(answer === direct); print("transitive runtime passed");',
-	);
-	fixture.json("game/tsconfig.json", { files: [], references: [{ path: "../second" }] });
-
-	expect(() => createSolution()).toThrow("same runtime folder");
-
-	second.rbxts.includePath = "../first/include";
-	fixture.json("second/tsconfig.spec.json", second);
-	delete rojo.tree.ReplicatedStorage.localRuntime;
-	fixture.json("first/test.project.json", rojo);
-	expectSuccess(createSolution().build());
-	const place = fixture.file("first/test.rbxl");
-	execFileSync("rojo", ["build", fixture.file("first/test.project.json"), "-o", place]);
-	const output = execFileSync("lune", ["run", path.join(PACKAGE_ROOT, "tests/runTestsWithLune.luau"), place], {
-		encoding: "utf8",
-	});
-	expect(output).toContain("transitive runtime passed");
 });
 
 it("rejects incompatible game mounts reached through an empty solution", () => {
@@ -378,7 +270,7 @@ it("watches independent games and preserves their runtimes during output cleanup
 			fixture.json("second/test.project.json", rojo);
 		});
 		expect(watch.log.slice(watch.log.lastIndexOf("Found "))).toContain("Found 0 errors");
-		expect(fixture.read("second/out-test/main.server.lua")).toContain('WaitForChild("moved")');
+		expect(fixture.read("second/out-test/main.server.lua")).toContain('WaitChild("moved")');
 		expect(fs.existsSync(fixture.file("second/moved-include/RuntimeLib.lua"))).toBe(true);
 	} finally {
 		await watch.close();

@@ -68,7 +68,7 @@ return nil
 `;
 
 exports[`uses relative imports within an isolated game container 1`] = `
-"local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("include"):WaitForChild("RuntimeLib"))
+"local TS = require(game.ReplicatedStorage:WaitChild("include"):WaitChild("RuntimeLib"))
 local value = TS.import(script, script, "value").value
 print(value)
 return nil

@@ -133,7 +133,7 @@ local function read(enabled)
 	-- ▲ Array.pop ▲
 	return _result
 end
-print((read(true)), (read(false)))
+print(read(true), read(false))
 return nil
 "
 `;
@@ -214,7 +214,7 @@ do
 	end
 	_container.read = read
 end
-print(Example.value, (Example.read()))
+print(Example.value, Example.read())
 return nil
 "
 `;

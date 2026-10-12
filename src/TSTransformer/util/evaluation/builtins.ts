@@ -1,6 +1,6 @@
 import luau from "@roblox-ts/luau-ast";
 import path from "path";
-import { RBXTS_SCOPE } from "Shared/constants";
+import { RBXTS_SCOPE, RBXTS_SCOPE_LEGACY } from "Shared/constants";
 import { assert } from "Shared/util/assert";
 import { getOrSetDefault } from "Shared/util/getOrSetDefault";
 import { isPathDescendantOf } from "Shared/util/isPathDescendantOf";
@@ -44,10 +44,17 @@ const PURE_MATH = new Set([
 ]);
 
 function isBuiltinDeclaration(state: TransformState, declaration: ts.Declaration) {
-	return isPathDescendantOf(
+	const descendantOfCurrent = isPathDescendantOf(
 		declaration.getSourceFile().fileName,
 		path.join(state.data.nodeModulesPath, RBXTS_SCOPE, "types"),
 	);
+	// quick hack to make @rbxts/types pass as with CONSTANT effects :)
+	const descendantOfLegacy = isPathDescendantOf(
+		declaration.getSourceFile().fileName,
+		path.join(state.data.nodeModulesPath, RBXTS_SCOPE_LEGACY, "types"),
+	);
+
+	return descendantOfCurrent || descendantOfLegacy;
 }
 
 /** check declaration identity, not spelling: local lookalikes are ordinary tables. */

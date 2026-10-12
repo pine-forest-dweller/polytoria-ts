@@ -2,10 +2,10 @@ local Promise = require(script.Parent:FindChild("Promise"))
 
 local OUTPUT_PREFIX = "polytoria-ts: "
 local NODE_MODULES = "node_modules"
-local DEFAULT_SCOPE = "@rbxts"
+local DEFAULT_SCOPE = "polytoria-ts"
 
 local TS = {}
-local _G = {} 
+local _G = world.Shared;
 
 TS.Promise = Promise
 
@@ -17,11 +17,16 @@ local function isPlugin(context)
 end
 
 function TS.getModule(context, scope, moduleName)
-	local scope = string.gsub(scope, "^@", "") -- strip leading @
 	-- legacy call signature
 	if moduleName == nil then
 		moduleName = scope
 		scope = DEFAULT_SCOPE
+	elseif scope ~= nil then
+		scope = string.gsub(scope, "^@", "") -- strip leading @
+	end
+
+	if moduleName ~= nil then
+		moduleName = string.gsub(moduleName, "^@", "")
 	end
 
 	local object = context

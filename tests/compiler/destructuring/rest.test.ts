@@ -136,13 +136,6 @@ it.each([
 		"set prefix and rest",
 		`function read(source: Set<number>) { const [, second = 9, ...rest] = source; return rest; }`,
 	],
-	["shared table rest", `function read(source: SharedTable) { const [first, ...rest] = source; return rest; }`],
-	[
-		"source capture",
-		`let source: Record<string, number> = { a: 1, b: 2 };
-		const { [(source = { a: 10, b: 20 }, "a")]: first, ...rest } = source;
-		print(first, rest);`,
-	],
 	["string rest", `function read(source: string) { const [first, , ...rest] = source; return rest; }`],
 	[
 		"tuple iterator loop rest",

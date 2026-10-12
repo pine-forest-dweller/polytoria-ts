@@ -148,7 +148,7 @@ export class TransformState {
 
 				let expression: luau.IndexableExpression = createGetService(serviceName);
 				// iterate through the rest of the path
-				// for each instance in the path, create a new WaitForChild call to be added on to the end of the final expression
+				// for each instance in the path, create a new WaitChild call to be added on to the end of the final expression
 				for (let i = 1; i < this.runtimeLibRbxPath.length; i++) {
 					expression = luau.create(luau.SyntaxKind.MethodCallExpression, {
 						expression,

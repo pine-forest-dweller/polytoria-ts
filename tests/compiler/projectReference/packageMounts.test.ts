@@ -43,7 +43,7 @@ it("prefers an explicit virtual mount over a real-path mount", () => {
 	fixture.json("default.project.json", rojo);
 
 	expectSuccess(fixture.createBuild().build());
-	expect(fixture.read("out/game/init.luau")).toContain('game:GetService("ReplicatedStorage"), "node_modules"');
+	expect(fixture.read("out/game/init.luau")).toContain('game.ReplicatedStorage, "node_modules"');
 });
 
 it("still rejects server-only modules resolved through a real path", () => {
@@ -66,7 +66,7 @@ it("still requires the npm scope layout for real-path mounts", () => {
 	const result = fixture.createBuild().build();
 	expect(result.emitSkipped).toBe(true);
 	expect(result.diagnostics.map(diagnostic => diagnostic.messageText).join("\n")).toContain(
-		"Imported package Roblox path is missing an npm scope",
+		"Imported package Polytoria path is missing an npm scope",
 	);
 });
 

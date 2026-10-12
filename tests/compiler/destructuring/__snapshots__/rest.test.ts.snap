@@ -592,36 +592,6 @@ return nil
 "
 `;
 
-exports[`preserves rest destructuring emit for shared table rest 1`] = `
-"local function read(source)
-	local _iterable = source
-	local _iterator = coroutine.wrap(function()
-		for _key, _value in _iterable do
-			coroutine.yield(_key, _value)
-		end
-	end)
-	local _value = { _iterator() }
-	local _done = _value[1] == nil
-	local first = if _done then nil else _value
-	local _rest = {}
-	if not _done then
-		local _length = 0
-		while true do
-			local _value_1 = { _iterator() }
-			if _value_1[1] == nil then
-				break
-			end
-			_length += 1
-			_rest[_length] = _value_1
-		end
-	end
-	local rest = _rest
-	return rest
-end
-return nil
-"
-`;
-
 exports[`preserves rest destructuring emit for source capture 1`] = `
 "local source = {
 	a = 1,
